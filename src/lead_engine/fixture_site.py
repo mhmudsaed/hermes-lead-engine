@@ -68,9 +68,20 @@ COMPANIES = {
 }
 
 
-def _page(title: str, heading: str, body: str, nav: list[tuple[str, str]]) -> bytes:
+def _page(
+    title: str,
+    heading: str,
+    body: str,
+    nav: list[tuple[str, str]],
+    script_src: str | None = None,
+) -> bytes:
     links = " | ".join(
         f'<a href="{href}">{html.escape(text)}</a>' for href, text in nav
+    )
+    script_tag = (
+        f"<script src=\"{html.escape(script_src)}\"></script>"
+        if script_src
+        else ""
     )
     doc = (
         "<!doctype html><html><head><meta charset='utf-8'>"
@@ -78,7 +89,7 @@ def _page(title: str, heading: str, body: str, nav: list[tuple[str, str]]) -> by
         f"<h1>{html.escape(heading)}</h1>"
         f"<nav>{links}</nav>"
         f"<main><p>{html.escape(body)}</p></main>"
-        "<script src=\"/_next/static/chunks/app.js\"></script>"
+        f"{script_tag}"
         "</body></html>"
     )
     return doc.encode("utf-8")
@@ -94,6 +105,13 @@ def render(slug: str, page: str) -> bytes | None:
     if page == "home":
         nav = [(f"{base}/about", "About us")]
         contact_email = company["contact_email"]
+        # Per-company <script src> fingerprints so tech-signal extraction has
+        # something honest to find on the fixture pages (mirrors the SPEC's
+        # "from page text/scripts" wording).
+        script_src = {
+            "acme-robotics": "/_next/static/chunks/app.js",
+            "brightline-studio": "/wp-content/themes/brightline/app.js",
+        }.get(slug)
         if slug == "acme-robotics":
             nav = [
                 (f"{base}/careers", "Careers — join our team"),
@@ -106,14 +124,16 @@ def render(slug: str, page: str) -> bytes | None:
             nav = []
         body = company["home_body"]
         if contact_email and slug == "acme-robotics":
-            page_html = _page(company["home_title"], name, body, nav)
+            page_html = _page(company["home_title"], name, body, nav,
+                              script_src=script_src)
             extra = (
                 f"<footer>Write to us at "
                 f"<a href=\"mailto:{contact_email}\">{contact_email}</a></footer>"
                 "</body></html>"
             )
             return page_html.replace(b"</body></html>", extra.encode("utf-8"))
-        return _page(company["home_title"], name, body, nav)
+        return _page(company["home_title"], name, body, nav,
+                     script_src=script_src)
     if page == "careers":
         if not company["careers_body"]:
             return None
