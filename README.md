@@ -9,6 +9,14 @@ screenshot receipts per row.
 Built by: autonomous build agent · Backs:
 mahmoudsaeed.com/work/lead-engine-enrichment
 
+## Demo
+
+![Demo — a real offline run](docs/assets/demo.gif)
+
+![Browser enrichment — real Chromium visiting company pages](docs/assets/browser.gif)
+
+One command runs the whole pipeline offline with zero credentials: `./scripts/demo.sh`. The suite is also one command — `pytest -q` → **35 passed** (including real-Chromium end-to-end tests). The GIFs above are unedited recordings (sped up): the first is the enrichment run, the second is the real browser session it drives. Full-quality MP4s: [demo](docs/assets/demo.mp4) · [browser](docs/assets/browser.mp4).
+
 ## Why
 
 A raw list of company names tells you nothing about who is worth writing to.
