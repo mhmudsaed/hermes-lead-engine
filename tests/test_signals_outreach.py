@@ -40,17 +40,83 @@ def test_draft_uses_only_verified_facts():
         summary="Acme builds warehouse robots.",
         contact="hi@acme.com",
     )
-    assert "Acme" in draft
-    assert "https://acme.com/careers" in draft
-    assert "React" in draft
-    sentences = [s for s in draft.split(". ") if s.strip()]
-    assert len(sentences) == 2  # two-sentence note
+    assert draft == (
+        "Hi Acme team — I noticed your hiring page (https://acme.com/careers) "
+        "and public-site signals of React on your public site. "
+        "I build browser-automation tooling that turns company websites into "
+        "enriched lead sheets — happy to share a two-minute teardown of what "
+        "I found, no pitch attached."
+    )
+
+
+def test_draft_careers_only():
+    assert draft_outreach("Acme", careers_url="https://acme.com/careers").split(". ")[0] == (
+        "Hi Acme team — I noticed your hiring page (https://acme.com/careers) "
+        "on your public site"
+    )
+
+
+def test_draft_tech_only():
+    first = draft_outreach("Acme", tech_signals=["React [framework signal]"]).split(". ")[0]
+    assert first == (
+        "Hi Acme team — I noticed public-site signals of React on your public site"
+    )
+
+
+def test_draft_summary_only_no_ellipsis_artifact():
+    # Trailing period in the source summary must not stack with "..." -> "....".
+    draft = draft_outreach(
+        "Acme", summary="Brightline Studio is a small brand and web studio.")
+    first = draft.split(". ")[0]
+    assert "...." not in draft
+    assert first == (
+        "Hi Acme team — I noticed what you're building "
+        "(Brightline Studio is a small brand and web studio...) on your public site"
+    )
+
+
+def test_draft_long_summary_truncates_cleanly():
+    draft = draft_outreach(
+        "Acme",
+        summary=("Brightline Studio is a small brand and web studio. "
+                 "And more text here to push past the truncation limit for sure."),
+    )
+    assert "...." not in draft
+    # 113-char source truncated at a word boundary, no trailing punctuation:
+    assert ("(Brightline Studio is a small brand and web studio. "
+            "And more text here to push past the truncation limit for...)") in draft
+
+
+def test_draft_contact_only():
+    first = draft_outreach("Acme", contact="hi@acme.com").split(". ")[0]
+    assert first == (
+        "Hi Acme team — I noticed your published contact hi@acme.com "
+        "on your public site"
+    )
+
+
+def test_draft_two_bits_joined_with_and():
+    draft = draft_outreach(
+        "Acme",
+        tech_signals=["React [framework signal]", "Python [language signal]"],
+        summary="Acme builds warehouse robots for busy ports.",
+    )
+    first = draft.split(". ")[0]
+    assert first == (
+        "Hi Acme team — I noticed public-site signals of React, Python "
+        "and what you're building (Acme builds warehouse robots for busy ports...) "
+        "on your public site"
+    )
 
 
 def test_draft_without_evidence_stays_honest():
     draft = draft_outreach("Acme")
-    assert "Acme" in draft
-    assert "hiring" not in draft.lower()
+    assert draft == (
+        "Hi Acme team — I was looking through your public site. "
+        "I build browser-automation tooling that turns company websites into "
+        "enriched lead sheets — happy to share a two-minute teardown of what "
+        "I found, no pitch attached."
+    )
 
 
 def test_polish_without_key_returns_draft_unchanged(monkeypatch):

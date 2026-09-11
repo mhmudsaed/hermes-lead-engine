@@ -12,6 +12,24 @@ import os
 import urllib.request
 
 MAX_TECH_MENTIONED = 3
+MAX_SUMMARY_CHARS = 110
+
+
+def _trim_summary(summary: str, max_chars: int = MAX_SUMMARY_CHARS) -> str:
+    """Shorten *summary* for inline quoting without ellipsis artifacts.
+
+    Trailing sentence punctuation is stripped first, so appending "..."
+    never produces "....". Returns "" when there is nothing quotable.
+    """
+    text = " ".join((summary or "").split())
+    if not text:
+        return ""
+    if len(text) <= max_chars:
+        return text.rstrip(".!?")
+    cut = text[:max_chars].rstrip()
+    if " " in cut:
+        cut = cut.rsplit(" ", 1)[0]
+    return cut.rstrip(".!?,;:")
 
 
 def _evidence_bits(
@@ -19,18 +37,25 @@ def _evidence_bits(
     tech_signals: list[str],
     summary: str,
     contact: str | None,
-) -> str:
+) -> list[str]:
+    """One self-contained noun phrase per verified fact, max two.
+
+    Each bit reads grammatically after "I noticed ..." on its own, so ANY
+    combination of bits joins cleanly with " and ". No bit ends with
+    punctuation that could collide with the sentence's own period.
+    """
     bits: list[str] = []
     if careers_url:
-        bits.append(f"you're hiring ({careers_url})")
+        bits.append(f"your hiring page ({careers_url})")
     if tech_signals:
         names = [sig.split(" [", 1)[0] for sig in tech_signals[:MAX_TECH_MENTIONED]]
         bits.append("public-site signals of " + ", ".join(names))
-    if summary:
-        bits.append(f"what you're building ({summary[:110].rstrip()}...)")
+    trimmed = _trim_summary(summary)
+    if trimmed:
+        bits.append(f"what you're building ({trimmed}...)")
     if contact:
         bits.append(f"your published contact {contact}")
-    return "; ".join(bits[:2])
+    return bits[:2]
 
 
 def draft_outreach(
@@ -41,9 +66,9 @@ def draft_outreach(
     contact: str | None = None,
 ) -> str:
     """Build a two-sentence outreach note from verified findings only."""
-    evidence = _evidence_bits(careers_url, tech_signals or [], summary or "", contact)
-    if evidence:
-        first = f"Hi {company} team — I came across {evidence} on your public site."
+    bits = _evidence_bits(careers_url, tech_signals or [], summary or "", contact)
+    if bits:
+        first = f"Hi {company} team — I noticed {' and '.join(bits)} on your public site."
     else:
         first = f"Hi {company} team — I was looking through your public site."
     second = (

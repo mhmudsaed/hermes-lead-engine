@@ -9,7 +9,7 @@ keys, no accounts:
 uv venv .venv
 uv pip install --python .venv/bin/python -e ".[dev]"
 .venv/bin/python -m playwright install chromium   # first time only
-.venv/bin/python -m pytest -q                     # 29 tests, ~10s
+.venv/bin/python -m pytest -q                     # 35 tests, ~10s
 bash scripts/demo.sh                              # 3-company offline demo
 ```
 
@@ -31,7 +31,7 @@ What the suite covers:
   a mixed 3-row run reports `enriched=2, blocked=1`.
 
 Verified on this build machine (real runs, not estimates): `pytest -q`
-prints `29 passed`; `scripts/demo.sh` prints
+prints `35 passed`; `scripts/demo.sh` prints
 `processed=3 enriched=2 failed=0 blocked=1 skipped=0` and writes
 `out/enriched-demo.xlsx` plus two real PNG screenshots (magic bytes
 `89 50 4E 47` confirmed on disk).
