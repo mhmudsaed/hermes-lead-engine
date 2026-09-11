@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69,<80"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-lead-engine"
+version = "1.0.0"
+description = "Batch enrichment tool: CSV of companies in, enriched spreadsheet out (browser-driven)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Mahmoud Saeed" }]
+dependencies = [
+  "playwright>=1.49,<2",
+  "openpyxl>=3.1,<4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+enrich = "lead_engine.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
