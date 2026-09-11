@@ -25,4 +25,5 @@ enrich = "lead_engine.cli:main"
 where = ["src"]
 
 [tool.pytest.ini_options]
+markers = ["e2e: offline end-to-end (real Chromium vs localhost fixture)"]
 testpaths = ["tests"]
