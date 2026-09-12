@@ -23,7 +23,7 @@ https://github.com/user-attachments/assets/42fb6535-df9d-494e-870c-d1f868326105
 
 ▶️ The browser session it drives — full-quality recording (plays inline):
 
-https://github.com/user-attachments/assets/9e95dc72-9206-4483-a3cb-d3a66efeb867
+https://github.com/user-attachments/assets/ee14c3cb-a262-450f-9bb1-df66d279422e
 
 One command runs the whole pipeline offline with zero credentials: `./scripts/demo.sh`. The suite is also one command — `pytest -q` → **35 passed** (including real-Chromium end-to-end tests). The GIFs above are real recordings (sped up; each opens with a title card): the first is the enrichment run, the second is the real browser session it drives. Full-quality MP4s: [demo](docs/assets/demo.mp4) · [browser](docs/assets/browser.mp4).
 
