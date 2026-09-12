@@ -11,21 +11,15 @@ mahmoudsaeed.com/work/lead-engine-enrichment
 
 ## Demo
 
-![Demo — a real offline run](docs/assets/demo.gif)
-
-
 ▶️ The enrichment run — full-quality recording (plays inline):
 
-https://github.com/user-attachments/assets/42fb6535-df9d-494e-870c-d1f868326105
-
-![Browser enrichment — real Chromium visiting company pages](docs/assets/browser.gif)
-
+https://github.com/user-attachments/assets/bdaacdc2-65d7-473b-88bc-ec7d29587913
 
 ▶️ The browser session it drives — full-quality recording (plays inline):
 
-https://github.com/user-attachments/assets/ee14c3cb-a262-450f-9bb1-df66d279422e
+https://github.com/user-attachments/assets/6de074af-da7e-491a-b95a-d8ee7bfeec66
 
-One command runs the whole pipeline offline with zero credentials: `./scripts/demo.sh`. The suite is also one command — `pytest -q` → **35 passed** (including real-Chromium end-to-end tests). The GIFs above are real recordings (sped up; each opens with a title card): the first is the enrichment run, the second is the real browser session it drives. Full-quality MP4s: [demo](docs/assets/demo.mp4) · [browser](docs/assets/browser.mp4).
+One command runs the whole pipeline offline with zero credentials: `./scripts/demo.sh`. The suite is also one command — `pytest -q` → **35 passed** (including real-Chromium end-to-end tests). The videos above are real recordings (mildly sped up; each opens and closes on a title card): the first is the enrichment run, the second is the real browser session it drives. Full-quality MP4s: [demo](docs/assets/demo.mp4) · [browser](docs/assets/browser.mp4).
 
 ## Why
 
