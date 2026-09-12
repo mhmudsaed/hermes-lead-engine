@@ -13,11 +13,11 @@ mahmoudsaeed.com/work/lead-engine-enrichment
 
 ▶️ The enrichment run — full-quality recording (plays inline):
 
-https://github.com/user-attachments/assets/bdaacdc2-65d7-473b-88bc-ec7d29587913
+https://github.com/user-attachments/assets/95852bc5-7695-445b-89b4-ef11b2cfa9c1
 
 ▶️ The browser session it drives — full-quality recording (plays inline):
 
-https://github.com/user-attachments/assets/6de074af-da7e-491a-b95a-d8ee7bfeec66
+https://github.com/user-attachments/assets/1afe887e-0ee7-454c-bcf3-d9ca546c0a3b
 
 One command runs the whole pipeline offline with zero credentials: `./scripts/demo.sh`. The suite is also one command — `pytest -q` → **35 passed** (including real-Chromium end-to-end tests). The videos above are real recordings (mildly sped up; each opens and closes on a title card): the first is the enrichment run, the second is the real browser session it drives. Full-quality MP4s: [demo](docs/assets/demo.mp4) · [browser](docs/assets/browser.mp4).
 
